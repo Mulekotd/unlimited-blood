@@ -1,42 +1,22 @@
 #include "Entity.h"
 
-// Construtor
 Entity::Entity(int x, int y, int width, int height)
-    : x(x), y(y), width(width), height(height), life(100), speed(0.0f), strength(0.0f) {
-}
+    : x(x), y(y), width(width), height(height), speed(0.0f), life(0), strength(0.0f) {}
 
-// Destrutor
 Entity::~Entity() {}
 
-int Entity::getLife() const {
-    return this->life;
+SDL_Point Entity::getCoordinates() const {
+    return SDL_Point{ x, y };
 }
 
-void Entity::setLife(int life) {
-    this->life = life;
+bool Entity::checkCollision(const Entity& other) {
+    // Simple AABB collision detection
+    return !(x + width < other.x || x > other.x + other.width ||
+             y + height < other.y || y > other.y + other.height);
 }
 
-float Entity::getSpeed() const {
-    return this->speed;
-}
-
-void Entity::setSpeed(float speed) {
-    this->speed = speed;
-}
-
-float Entity::getStrength() const {
-    return this->strength;
-}
-
-void Entity::setStrength(float strength) {
-    this->strength = strength;
-}
-
-// Method for drawing an entity
-void Entity::draw(SDL_Renderer* renderer) const {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
-    SDL_Rect rectangle = { x, y, width, height };
-
-    SDL_RenderFillRect(renderer, &rectangle);
+void Entity::draw(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int offsetX, int offsetY) {
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_Rect rect = { x - offsetX, y - offsetY, width, height };
+    SDL_RenderFillRect(renderer, &rect);
 }

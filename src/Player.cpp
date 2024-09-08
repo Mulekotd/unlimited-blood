@@ -4,26 +4,47 @@
 #include "Player.h"
 #include "Globals.h"
 
-// Construtor
 Player::Player(void)
-    : Entity(SCREEN_CENTER_X, SCREEN_CENTER_Y, 50, 50), mana(100) {
+    : Entity(SCREEN_CENTER_X, SCREEN_CENTER_Y, 50, 50) {
+        speed = 8.0f;
 }
 
-// Destrutor
 Player::~Player() {}
 
-int Player::getMana() const {
-    return this->mana;
+// TODO: fix "shaking" character
+void Player::move(float dx, float dy) {
+    // Normalize the vector to prevent faster movement in diagonals
+    float magnitude = sqrt(dx * dx + dy * dy);
+    
+    if (magnitude != 0) {
+        dx /= magnitude;
+        dy /= magnitude;
+    }
+
+    x += dx * speed;
+    y += dy * speed;
 }
 
-void Player::setMana(int mana) {
-    this->mana = mana;
-}
+// TODO: add dash feature
+void Player::inputs(const SDL_Event& event) {
+    float dx = 0.0f;
+    float dy = 0.0f;
 
-std::u32string Player::getName() const {
-    return this->name;
-};
+    // Detect multiple keys being pressed
+    const Uint8* state = SDL_GetKeyboardState(NULL);
 
-void Player::setName(const std::u32string& name) {
-    this->name = name;
+    if (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_A]) {
+        dx -= 1.0f;
+    }
+    if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_D]) {
+        dx += 1.0f;
+    }
+    if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_W]) {
+        dy -= 1.0f;
+    }
+    if (state[SDL_SCANCODE_DOWN] || state[SDL_SCANCODE_S]) {
+        dy += 1.0f;
+    }
+
+    move(dx, dy);
 }

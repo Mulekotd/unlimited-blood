@@ -8,24 +8,16 @@ public:
     Entity(int x, int y, int width, int height);
     ~Entity();
 
-    // Methods to access and modify attributes
-    int getLife() const;
-    void setLife(int life);
-    float getSpeed() const;
-    void setSpeed(float speed);
-    float getStrength() const;
-    void setStrength(float strength);
+    void draw(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int offsetX, int offsetY);
+    bool checkCollision(const Entity& other);
 
-    // Method to draw the entity
-    void draw(SDL_Renderer* renderer) const;
+    SDL_Point getCoordinates() const;
 
 protected:
-    // Position and size of the player
-    int x, y;       // Position
-    int width, height; // Size
+    int x, y;
+    int width, height;
+    float speed;  
 
 private:
     int life;
-    float speed;
-    float strength;
 };

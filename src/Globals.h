@@ -1,5 +1,8 @@
 #pragma once
 
+constexpr float FPS = 60;
+constexpr float FRAME_DURATION = 1000 / FPS;
+
 struct Resolution {
     int width;
     int height;
@@ -11,7 +14,7 @@ constexpr Resolution RESOLUTION_1024x768 = {1024, 768};
 constexpr Resolution RESOLUTION_1280x720 = {1280, 720};
 constexpr Resolution RESOLUTION_1920x1080 = {1920, 1080};
 
-// Define the current resolution as a global variable (initially 800x600)
+// Define the current resolution as a global variable
 extern Resolution currentResolution;
 
 // Variables for the screen center position, calculated dynamically

@@ -3,22 +3,31 @@
 
 #include "src/Player.h"
 #include "src/Globals.h"
+#include "src/Camera.h"
 
 bool isRunning = true;
 
 SDL_Window* gWindow = nullptr;
 SDL_Renderer* gRenderer = nullptr;
 
-Player player;
+Player* player = nullptr;
+Camera* camera = nullptr;
 
-// Initializes SDL, creates window and renderer
+// Initializes SDL, creates the window and renderer
 bool initialize_window() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "ERROR: Could not initialize SDL: %s\n", SDL_GetError());
         return false;
     }
 
-    gWindow = SDL_CreateWindow("Unlimited Blood", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, currentResolution.width, currentResolution.height, SDL_WINDOW_ALLOW_HIGHDPI);
+    gWindow = SDL_CreateWindow(
+        "Unlimited Blood", 
+        SDL_WINDOWPOS_CENTERED, 
+        SDL_WINDOWPOS_CENTERED, 
+        currentResolution.width, 
+        currentResolution.height, 
+        SDL_WINDOW_ALLOW_HIGHDPI
+    );
     
     if (gWindow == nullptr) {
         fprintf(stderr, "ERROR: Could not create window: %s\n", SDL_GetError());
@@ -35,34 +44,55 @@ bool initialize_window() {
     return true;
 }
 
-// Setup: Sets up the game environment
+// Setup: Initializes the game environment
 void setup() {
-    player = Player();
+    player = new Player();
+    camera = new Camera(currentResolution.width, currentResolution.height);
+
+    // Update the screen center based on the initial resolution
+    updateScreenCenter();
 }
 
-// Update: handles events
-void update() {
+// Processes input events from the SDL event queue
+void process_events() {
     SDL_Event event;
 
-    if (SDL_PollEvent(&event)) {
-        if (SDL_QUIT == event.type) {
+    // Process all events in the event queue
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
             isRunning = false;
         }
+        
+        player->inputs(event);
     }
-
 }
 
-// Render: draws the player and updates the screen
-void render(void) {
-    SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
+// Update: Updates the game state
+void update() {
+    process_events();
+    camera->follow(*player);
+}
+
+// Render: draws the player, and presents the updated frame
+void render() {
+    SDL_SetRenderDrawColor(gRenderer, 0, 255, 0, 255);
     SDL_RenderClear(gRenderer);
 
-    player.draw(gRenderer);
+    // Get camera offsets to adjust rendering position
+    int offsetX = camera->getOffsetX();
+    int offsetY = camera->getOffsetY();
+
+    // Draw the player with the camera's offset
+    player->draw(gRenderer, 255, 0, 0, 255, offsetX, offsetY);
 
     SDL_RenderPresent(gRenderer);
 }
 
+// Destroys the window and renderer, then quits SDL
 void destroy_window() {
+    delete player;
+    delete camera;
+
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     
@@ -76,9 +106,21 @@ int main(int argc, char* argv[]) {
     isRunning = initialize_window();
     setup();
 
+    Uint32 frameStart;
+    int frameTime;
+    
+    // Game loop: process events, update game state, and render
     while (isRunning) {
+        frameStart = SDL_GetTicks();
+        
         update();
         render();
+        
+        frameTime = SDL_GetTicks() - frameStart;
+        
+        if (FRAME_DURATION > frameTime) {
+            SDL_Delay(FRAME_DURATION - frameTime);
+        }
     }
 
     destroy_window();

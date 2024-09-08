@@ -10,14 +10,6 @@ public:
     Player();
     ~Player();
 
-    // Methods to access and modify attributes
-    int getMana() const;
-    void setMana(int mana);
-    std::u32string getName() const;
-    void setName(const std::u32string& name);
-
-private:
-    int mana;
-    double radius;
-    std::u32string name;
+    void move(float dx, float dy);
+    void inputs(const SDL_Event& event);
 };
