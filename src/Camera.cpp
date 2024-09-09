@@ -1,8 +1,8 @@
 #include <SDL2/SDL.h>
 
-#include "Camera.h"
-#include "Entity.h"
-#include "Globals.h"
+#include "camera.hpp"
+#include "entity.hpp"
+#include "globals.hpp"
 
 Camera::Camera(int screenWidth, int screenHeight) 
     : m_cx(0), m_cy(0), m_screenWidth(screenWidth), m_screenHeight(screenHeight) {}

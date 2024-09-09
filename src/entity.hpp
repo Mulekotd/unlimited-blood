@@ -19,5 +19,5 @@ protected:
     float speed;  
 
 private:
-    int life;
+    int m_life;
 };

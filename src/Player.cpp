@@ -1,12 +1,12 @@
 #include <iostream>
 #include <math.h>
 
-#include "Player.h"
-#include "Globals.h"
+#include "player.hpp"
+#include "globals.hpp"
 
 Player::Player(void)
     : Entity(SCREEN_CENTER_X, SCREEN_CENTER_Y, 50, 50) {
-        speed = 8.0f;
+        speed = 5.0f;
 }
 
 Player::~Player() {}

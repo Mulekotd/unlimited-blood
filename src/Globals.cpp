@@ -1,4 +1,4 @@
-#include "Globals.h"
+#include "globals.hpp"
 
 Resolution currentResolution = RESOLUTION_1024x768;
 

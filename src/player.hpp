@@ -3,7 +3,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-#include "Entity.h"
+#include "entity.hpp"
 
 class Player : public Entity {
 public:
