@@ -21,5 +21,5 @@ extern Resolution currentResolution;
 extern int SCREEN_CENTER_X;
 extern int SCREEN_CENTER_Y;
 
-// Function to update the screen center position based on the current resolution
+// Function to update the screen center position based on the current currentResolution
 void updateScreenCenter();

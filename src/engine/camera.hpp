@@ -1,6 +1,10 @@
 #pragma once
 
-#include "entity.hpp"
+#include <SDL2/SDL.h>
+
+#include "../entity.hpp"
+#include "globals.hpp"
+#include "vector.hpp"
 
 class Camera {
 public:

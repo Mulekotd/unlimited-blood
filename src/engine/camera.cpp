@@ -1,8 +1,4 @@
-#include <SDL2/SDL.h>
-
 #include "camera.hpp"
-#include "entity.hpp"
-#include "globals.hpp"
 
 Camera::Camera(int screenWidth, int screenHeight) 
     : m_cx(0), m_cy(0), m_screenWidth(screenWidth), m_screenHeight(screenHeight) {}
@@ -11,7 +7,7 @@ Camera::~Camera() {}
 
 // Smoothly follow the entity with a slight delay
 void Camera::follow(const Entity& entity) {
-    SDL_Point coords = entity.getCoordinates();
+    Vector2 coords = entity.getPosition();
 
     // Target position: center the entity on screen
     int targetX = coords.x - SCREEN_CENTER_X;

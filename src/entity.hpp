@@ -3,20 +3,22 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
+#include "engine/vector.hpp"
+
 class Entity {
 public:
-    Entity(int x, int y, int width, int height);
+    Entity(float x, float y, int width, int height);
     ~Entity();
 
-    void draw(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int offsetX, int offsetY);
+    virtual void draw(SDL_Renderer* renderer, int offsetX, int offsetY);
     bool checkCollision(const Entity& other);
 
-    SDL_Point getCoordinates() const;
+    Vector2 getPosition() const;
 
 protected:
-    int x, y;
+    Vector2 position;
     int width, height;
-    float speed;  
+    float speed;
 
 private:
     int m_life;

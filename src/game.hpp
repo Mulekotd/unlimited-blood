@@ -3,8 +3,8 @@
 #include <SDL2/SDL.h>
 
 #include "player.hpp"
-#include "camera.hpp"
-#include "globals.hpp"
+#include "engine/camera.hpp"
+#include "engine/globals.hpp"
 
 class Game {
 public:

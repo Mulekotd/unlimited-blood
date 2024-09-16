@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <SDL2/SDL.h>
-
 #include "game.hpp"
 
 Game::Game() 
@@ -43,7 +40,7 @@ bool Game::initialize() {
 }
 
 void Game::setup() {
-    m_player = new Player();
+    m_player = new Player(m_renderer);
     m_camera = new Camera(currentResolution.width, currentResolution.height);
     
     updateScreenCenter();
@@ -73,7 +70,7 @@ void Game::render() {
     int offsetX = m_camera->getOffsetX();
     int offsetY = m_camera->getOffsetY();
 
-    m_player->draw(m_renderer, 255, 0, 0, 255, offsetX, offsetY);
+    m_player->draw(m_renderer, offsetX, offsetY);
 
     SDL_RenderPresent(m_renderer);
 }
